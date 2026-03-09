@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
 <title>For You ❤️</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +10,29 @@
 <style>
 
 body{
-text-align:center;
+margin:0;
 font-family:Arial;
+text-align:center;
 background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-height:100vh;
-margin-top:80px;
+overflow:hidden;
+}
+
+.container{
+margin-top:60px;
 }
 
 img{
-width:300px;
+width:280px;
 border-radius:20px;
-box-shadow:0 10px 20px rgba(0,0,0,0.3);
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
 button{
 font-size:18px;
-padding:10px 20px;
+padding:12px 22px;
 margin:10px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
 }
 
@@ -37,9 +42,34 @@ color:white;
 }
 
 #noBtn{
-background:#dc3545;
+background:#ff4d4d;
 color:white;
 position:absolute;
+}
+
+#message{
+display:none;
+padding:40px;
+}
+
+.heart{
+position:fixed;
+top:-10px;
+color:red;
+font-size:20px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+
+0%{
+transform:translateY(-10vh);
+}
+
+100%{
+transform:translateY(110vh);
+}
+
 }
 
 </style>
@@ -47,6 +77,8 @@ position:absolute;
 </head>
 
 <body>
+
+<div class="container" id="main">
 
 <h1>Will you be my Valentine? ❤️</h1>
 
@@ -57,56 +89,98 @@ position:absolute;
 <button id="yesBtn">Yes</button>
 <button id="noBtn">No</button>
 
+</div>
+
+<div id="message">
+
+<h1>အရမ်းချစ်တယ် ❤️</h1>
+
+<h2 id="date"></h2>
+
+<p id="letter" style="font-size:20px;max-width:600px;margin:auto;"></p>
+
+</div>
+
 <audio id="song" loop>
 <source src="music.mp3" type="audio/mp3">
 </audio>
 
 <script>
 
-let yesSize = 18;
-
-const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+let yesSize = 18;
 
 function moveNo(){
 
 yesSize += 8;
 
-yesBtn.style.fontSize = yesSize + "px";
+yesBtn.style.fontSize = yesSize+"px";
 
-noBtn.style.left = Math.random()*window.innerWidth+"px";
-noBtn.style.top = Math.random()*window.innerHeight+"px";
+noBtn.style.left=Math.random()*window.innerWidth+"px";
+noBtn.style.top=Math.random()*window.innerHeight+"px";
 
 }
 
 noBtn.onmouseover = moveNo;
 noBtn.ontouchstart = moveNo;
 
-yesBtn.onclick = function(){
+yesBtn.onclick=function(){
 
 document.getElementById("song").play();
 
-let today = new Date().toDateString();
+document.getElementById("main").style.display="none";
 
-document.body.innerHTML =
+document.getElementById("message").style.display="block";
 
-"<h1>အရမ်းချစ်တယ် ❤️</h1>" +
+document.getElementById("date").innerHTML=new Date().toDateString();
 
-"<h2>"+today+"</h2>" +
+typeLetter();
 
-"<p style='font-size:20px;max-width:600px;margin:auto;'>"
+startHearts();
 
-+ "From the moment you came into my life, everything became brighter. "
+}
 
-+ "You are the peace in my heart and the happiness in my days."
+let text="From the moment you came into my life, everything became brighter. You are the happiness in my heart and the peace in my world. In this huge world, living doesn't feel special… but losing you would make me lose my mind. ခုကမ္ဘာကြီးမှာ အသက်ရှင်ရတာ မထူးရတဲ့ထဲ မင်းကိုသာ ဆုံးရှုံးရရင် ရူးရချည်ရဲ့ကွယ်";
 
-+ "<br><br>"
+let i=0;
 
-+ "ခုကမ္ဘာကြီးမှာ အသက်ရှင်ရတာ မထူးရတဲ့ထဲ "
+function typeLetter(){
 
-+ "မင်းကိုသာ ဆုံးရှုံးရရင် ရူးရချည်ရဲ့ကွယ်"
+if(i<text.length){
 
-+ "</p>";
+document.getElementById("letter").innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typeLetter,40);
+
+}
+
+}
+
+function startHearts(){
+
+setInterval(function(){
+
+let heart=document.createElement("div");
+
+heart.className="heart";
+
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+
+heart.style.fontSize=(10+Math.random()*30)+"px";
+
+heart.style.animationDuration=(3+Math.random()*5)+"s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),8000);
+
+},300);
 
 }
 
